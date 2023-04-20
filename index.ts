@@ -9,25 +9,19 @@ const KEY = 'ck2OXUAJsF0iz999XGQ62jyXo8AXOVp7';
 
 const url = 'https://www.mapquestapi.com/directions/v2/route';
 
-async function getTravelInfo(locA: string, locB: string) {
-    var info: Array<any>;
-    
-    fetch(`${url}?key=${KEY}&from=${locA}&to=${locB}`)
-        .then(res => res.json())
-        .then(data => {
-            info = [data["realTime"], data["distance"], data["formattedTime"]];
-            return info;
-        });
-
-
+async function fetchTravelInfoJSON(locA: string, locB: string) {
+    const response = await fetch(`${url}?key=${KEY}&from=${locA}&to=${locB}`);
+    const info = await response.json();
+    return info;
 }
 
-async function main() {
-    console.log(await getTravelInfo(loc1, loc2));
-}
+var traveldata: Array<any> = [];
 
-main().catch(console.log);
+fetchTravelInfoJSON(loc1, loc2).then(info => {
+    info; //fetched info
+    traveldata = [info["realTime"], info["distance"], info["formattedTime"]];
+});
 
-
+console.log(traveldata);
 
 
